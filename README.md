@@ -20,8 +20,6 @@ By only using a single fetch via a proxy.
 I initially wanted to test whether I could make a lightweight webscraper that only works with vanilla javascript in your browser but I totally forgot about CORS.\
 Solution: using the [CORS-Anywhere-reverse-Proxy](https://github.com/Rob--W/cors-anywhere) to bypass it.
 
-And heres the fetch:
-
 ```js
 let URL = ''; // <-- Your URL will be stored here
 const proxy = 'https://cors-anywhere.herokuapp.com/';
