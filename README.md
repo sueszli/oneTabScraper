@@ -19,7 +19,7 @@ I initially wanted to test whether I could make a lightweight webscraper that on
 
 Here I'm using the CORS-Anywhere-reverse-Proxy to bypass it, but it requires you to opt-in before usage first, so take a look at [the proxy-server repository](https://github.com/Rob--W/cors-anywhere) used in this project.
 
-And heres the GET-request:
+And heres the fetch:
 
 ```js
 let URL = ''; // <-- Your URL will be stored here
