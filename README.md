@@ -17,9 +17,8 @@ Alternatively this could also be done directly in your console as in this [tutor
 ## How it works
 By only using a single fetch via a proxy.
 
-I initially wanted to test whether I could make a lightweight webscraper that only works with vanilla javascript in your browser but I totally forgot about CORS.
-
-Here I'm using the CORS-Anywhere-reverse-Proxy to bypass it, but it requires you to opt-in before usage first, so take a look at [the proxy-server repository](https://github.com/Rob--W/cors-anywhere) used in this project.
+I initially wanted to test whether I could make a lightweight webscraper that only works with vanilla javascript in your browser but I totally forgot about CORS.\
+Here I'm using the [CORS-Anywhere-reverse-Proxy](https://github.com/Rob--W/cors-anywhere) to bypass it.
 
 And heres the fetch:
 
