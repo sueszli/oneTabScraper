@@ -24,8 +24,6 @@ Here I'm using the CORS-Anywhere-reverse-Proxy to bypass it, but it requires you
 let URL = ''; // <-- Your URL will be stored here
 const proxy = 'https://cors-anywhere.herokuapp.com/';
 
-let linkStrings = []; //string array containing all anchors
-
 fetch(proxy + URL)
     .then(response => response.text())
     .then(data => {                
@@ -33,8 +31,11 @@ fetch(proxy + URL)
         const parser = new DOMParser();
         const doc = parser.parseFromString(data, "text/html");
 
+        // get link nodes
         const links = doc.querySelectorAll('a');
-        links.forEach(elem => linkStrings.push(elem.href));
+        
+        // get link strings
+        const RESULT = Array.from(links).map(link => link.href); //string array containing all anchors
     })
     .catch(err => {
         console.log('Error: ', err);
