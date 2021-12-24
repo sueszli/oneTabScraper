@@ -1,5 +1,6 @@
 # OneTab Web-Scraper
-**Access it here: https://sueszli.github.io/oneTabScraper/**
+Request temporary access here: https://cors-anywhere.herokuapp.com/corsdemo
+**Access scraper here: https://sueszli.github.io/oneTabScraper/**
 
 A simple tool to scrape all your links into a list from a oneTab collection.\
 Alternatively this could also be done directly in your console as in this [tutorial](https://www.youtube.com/watch?v=rlv7ueX4Yjc).
