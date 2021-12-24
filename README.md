@@ -31,10 +31,10 @@ fetch(proxy + URL)
         const parser = new DOMParser();
         const doc = parser.parseFromString(data, "text/html");
 
-        // get link nodes
+        // get anchor nodes
         const links = doc.querySelectorAll('a');
         
-        // get link strings
+        // get strings from anchor nodes
         const RESULT = Array.from(links).map(link => link.href); //string array containing all anchors
     })
     .catch(err => {
