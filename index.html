@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OneTab Scraper </title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css">
+</head>
+
+<style>
+    form,
+    input,
+    button {
+        margin: 0 !important;
+        display: inline-block !important;
+    }
+
+    form {
+        padding: 0 !important;
+
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 2rem !important;
+
+        width: 100% !important;
+    }
+
+    input {
+        margin-left: 10% !important;
+        width: 60%;
+    }
+
+    .output {
+        margin-top: 3rem !important;
+    }
+
+    code {
+        margin-top: 0.5rem;
+        display: block;
+    }
+</style>
+
+<body>
+    <h1>Let's get your links</h1>
+    <p>
+        The browser add-on <a href="https://www.one-tab.com/">OneTab</a> let's you create a collection of websites
+        and export them via a public link.
+        <br>
+        This tool will scrape all websites from your collection, list them below and store them in your clipboard.
+    </p>
+    <p>
+        <b>Enter your collection-URL below:</b>
+    </p>
+
+    <form>
+        <input type="text">
+        <button type="submit" disabled>SCRAPE</button>
+    </form>
+
+
+    <div class="output">
+    </div>
+</body>
+
+<script>
+    // tutorial: https://www.youtube.com/watch?v=gDmmokYDPOw
+
+    let URL = '';
+    const proxy = 'https://cors-anywhere.herokuapp.com/'; // cors proxy
+
+    // listen to input in form and check if button should be enabled
+    document.querySelector('input').addEventListener('keyup', function (e) {
+
+        URL = e.target.value;
+
+        // check if URL is valid
+        const valid = !!URL.match(/^(http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/);
+
+        // disable button if not valid
+        document.querySelector('button').disabled = !valid;
+    });
+
+
+    // listen to button click
+    document.querySelector('form').addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        // empty output
+        document.querySelector('.output').innerHTML = '';
+
+
+        let linkStrings = [];
+
+        fetch(proxy + URL)
+            .then(response => response.text())
+            .then(data => {                
+                // parse html text
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(data, "text/html");
+
+                const links = doc.querySelectorAll('a');
+                links.forEach(elem => {
+                    linkStrings.push(elem.href);
+                });
+
+                // copy to clipboard
+                let clipboardString = '';
+
+                for (let i = 0; i < linkStrings.length; i++) {
+                    if (i > 1) {
+                        clipboardString += linkStrings[i] + '\n\n\n';
+                        document.querySelector('.output').innerHTML += `<code>${linkStrings[i]}</code>`;
+                    }
+                }
+
+                console.log(clipboardString);
+                navigator.clipboard.writeText(clipboardString);
+            })
+            .catch(err => {
+                console.log('Error: ', err);
+            });
+    });
+
+
+</script>
+
+
+</html>
