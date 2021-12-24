@@ -27,18 +27,15 @@ const proxy = 'https://cors-anywhere.herokuapp.com/';
 
 fetch(proxy + URL)
     .then(response => response.text())
-    .then(data => {                
+    .then(htmlText => {                
         // parse html text
         const parser = new DOMParser();
-        const doc = parser.parseFromString(data, "text/html");
+        const doc = parser.parseFromString(htmlText, "text/html");
 
         // get anchor nodes
         const links = doc.querySelectorAll('a');
         
         // get strings from anchor nodes
-        const RESULT = Array.from(links).map(link => link.href); //string array containing all anchors
-    })
-    .catch(err => {
-        console.log('Error: ', err);
+        const RESULT = Array.from(links).map(link => link.href);
     });
 ```
