@@ -91,20 +91,14 @@
         // empty output
         document.querySelector('.output').innerHTML = '';
 
-
-        let linkStrings = [];
-
         fetch(proxy + URL)
             .then(response => response.text())
             .then(data => {                
                 // parse html text
                 const parser = new DOMParser();
                 const doc = parser.parseFromString(data, "text/html");
-
                 const links = doc.querySelectorAll('a');
-                links.forEach(elem => {
-                    linkStrings.push(elem.href);
-                });
+                const linkStrings = Array.from(links).map(link => link.href);
 
                 // copy to clipboard
                 let clipboardString = '';
@@ -115,8 +109,6 @@
                         document.querySelector('.output').innerHTML += `<code>${linkStrings[i]}</code>`;
                     }
                 }
-
-
                 navigator.clipboard.writeText(clipboardString);
             })
             .catch(err => {
