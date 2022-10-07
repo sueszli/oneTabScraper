@@ -6,6 +6,8 @@ Alternatively this could also be done directly in your console as in this [tutor
 1. Request temporary access here: https://cors-anywhere.herokuapp.com/corsdemo
 2. Access scraper here: https://sueszli.github.io/oneTabScraper/
 
+(Note: Another alternative would be not using a proxy at all and installing a browser add-on that turns off CORS restrictions in your browser)
+
 &nbsp;
 
 ## How to use
