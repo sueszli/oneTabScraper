@@ -1,4 +1,4 @@
-# OneTab Web-Scraper
+# OneTab Web Scraper
 
 A simple tool to scrape all your links into a list from a [OneTab](https://www.one-tab.com/) collection.\
 Alternatively this could also be done directly in your console as in this [tutorial](https://www.youtube.com/watch?v=rlv7ueX4Yjc).
