@@ -1,6 +1,6 @@
 Turn your [OneTab](https://www.one-tab.com/) links into plaintext:
 
-1. request temporary access: https://cors-anywhere.herokuapp.com/corsdemo
+1. request temporary cors proxy access: https://cors-anywhere.herokuapp.com/corsdemo
 2. run scraper: https://sueszli.github.io/oneTabScraper/
 
 <br>
