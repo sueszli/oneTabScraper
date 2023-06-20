@@ -1,101 +1,110 @@
 <!DOCTYPE html>
 <html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>OneTab Scraper</title>
+        <link
+            rel="icon"
+            href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>
+            ⭐️
+            </text></svg>"
+        />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css" />
+    </head>
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OneTab Scraper </title>
+    <body>
+        <h1>OneTab Scraper</h1>
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css">
-</head>
+        <section>
+            <h4>What is this?</h4>
+            <p>
+                This is a tool enables you to scrape all links from a <a href="https://www.one-tab.com/">OneTab</a> collection and store them in your clipboard.
+            </p>
+            <ol>
+                <li>Make your OneTab collection public</li>
+                <li>Request temporary proxy access here: <a href="https://cors-anywhere.herokuapp.com/corsdemo">cors-anywhere proxy</a></li>
+                <li>Insert your onetab collection link below and click on the "Scrape" button</li>
+            </ol>
+        </section>
 
-<body>
-    <h1>OneTab Scraper</h1>
-    <p>
-        The browser add-on <a href="https://www.one-tab.com/">OneTab</a> lets you create a collection of recently
-        opened pages and export them via a public link.
-        <br>
-        This tool will scrape all pages from your collection, list them below and store them in your clipboard.
-    </p>
-    <p>
-        <b>Enter your collection-URL below:</b>
-    </p>
+        <br />
 
-    <form>
-        <input type="text">
-        <button type="submit" disabled>SCRAPE</button>
-    </form>
+        <section>
+            <h4>Enter the URL of your collection below:</h4>
 
-    <div class="output"></div>
-</body>
+            <form>
+                <input type="text" />
+                <button type="button" onclick="buttenClicked()" disabled>SCRAPE</button>
+            </form>
 
-<script>
-    let URL = '';
-    const proxy = 'https://cors-anywhere.herokuapp.com/';
+            <div class="output"></div>
+        </section>
+    </body>
 
-    document.querySelector('input').addEventListener('keyup', function (e) {
-        URL = e.target.value;
-        const valid = !!URL.match(/^(http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/);
-        document.querySelector('button').disabled = !valid;
-    });
+    <script>
+        const validate = () => {
+            const inputContent = document.querySelector('input').value || ''
+            const validPrefix = inputContent.startsWith('https://www.one-tab.com/page/')
+            const validUrl = !!inputContent.match(/^(http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/)
+            document.querySelector('button').disabled = !(validPrefix && validUrl)
+        }
+        document.onkeydown = validate
+        document.onkeyup = validate
+        document.onkeypress = validate
 
-    document.querySelector('form').addEventListener('submit', function (e) {
-        e.preventDefault();
-        document.querySelector('.output').innerHTML = '';
+        const buttenClicked = () => {
+            document.querySelector('.output').innerHTML = ''
+            const inputContent = document.querySelector('input').value
+            console.assert(inputContent, 'inputContent is empty')
 
-        fetch(proxy + URL)
-            .then(response => response.text())
-            .then(data => {                
-                const parser = new DOMParser();
-                const doc = parser.parseFromString(data, "text/html");
-                const links = doc.querySelectorAll('a');
-                const linkStrings = Array.from(links).map(link => link.href);
+            const proxy = 'https://cors-anywhere.herokuapp.com/'
+            const response = fetch(proxy + inputContent)
+                .then((response) => response.text())
+                .then((plaintext) => {
+                    const html = new DOMParser().parseFromString(plaintext, 'text/html')
+                    const hrefs = Array.from(html.querySelectorAll('a')).map((anchor) => anchor.href)
+                    return hrefs
+                })
+                .then((hrefs) => {
+                    hrefs = hrefs.slice(3)
+                    hrefs.forEach((h) => (document.querySelector('.output').innerHTML += `<code>${h}</code>`))
+                    navigator.clipboard.writeText(hrefs.join('\n'))
+                })
+                .catch((err) => console.error(err))
+        }
+    </script>
 
-                let clipboardString = '';
-                for (let i = 0; i < linkStrings.length; i++) {
-                    if (i > 1) {
-                        clipboardString += linkStrings[i] + '\n\n';
-                        document.querySelector('.output').innerHTML += `<code>${linkStrings[i]}</code>`;
-                    }
-                }
-                navigator.clipboard.writeText(clipboardString);
-            })
-            .catch(err => {
-                console.log('Error: ', err);
-            });
-    });
-</script>
+    <style>
+        form,
+        input,
+        button {
+            margin: 0 !important;
+            display: inline-block !important;
+        }
 
-<style>
-    form,
-    input,
-    button {
-        margin: 0 !important;
-        display: inline-block !important;
-    }
+        form {
+            padding: 0 !important;
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: 1rem !important;
+            width: 100% !important;
+        }
 
-    form {
-        padding: 0 !important;
-        margin-left: auto;
-        margin-right: auto;
-        margin-top: 2rem !important;
-        width: 100% !important;
-    }
+        input {
+            margin-left: 10% !important;
+            width: 60%;
+        }
 
-    input {
-        margin-left: 10% !important;
-        width: 60%;
-    }
+        .output {
+            margin-top: 3rem !important;
+        }
 
-    .output {
-        margin-top: 3rem !important;
-    }
-
-    code {
-        margin-top: 0.5rem;
-        display: block;
-    }
-</style>
-
+        code {
+            color: white;
+            margin-top: 0.5rem;
+            display: block;
+        }
+    </style>
 </html>
